@@ -30,7 +30,7 @@ namespace System.Test
             {
                 var command = new AddStringCommand($"{number}");
                 var count = await writer.Execute(command).ConfigureAwait(false);
-                Assert.AreEqual(number, count);
+                Assert.Equals(number, count);
             }
 
             await writer.DisposeAsync().ConfigureAwait(false);
@@ -41,7 +41,7 @@ namespace System.Test
                 
                 var strings = await reader.Execute(new GetStringsQuery()).ConfigureAwait(false);
 
-                Assert.AreEqual(records, strings.Count);
+                Assert.Equals(records, strings.Count);
 
                 await reader.DisposeAsync().ConfigureAwait(false);
             }
@@ -71,7 +71,7 @@ namespace System.Test
                 {
                     var command = new AddStringCommand($"{number}");
                     var count = await writer.Execute(command).ConfigureAwait(false);
-                    Assert.AreEqual(++totalCount, count);
+                    Assert.Equals(++totalCount, count);
                 }
 
                 await writer.DisposeAsync().ConfigureAwait(false);
@@ -79,7 +79,7 @@ namespace System.Test
 
             var strings = await reader.Execute(new GetStringsQuery()).ConfigureAwait(false);
 
-            Assert.AreEqual(records * writers.Length, strings.Count);
+            Assert.Equals(records * writers.Length, strings.Count);
 
             await reader.DisposeAsync().ConfigureAwait(false);
         }
@@ -113,7 +113,7 @@ namespace System.Test
                 {
                     var command = new AddStringCommand($"{number}");
                     var count = await writer.Execute(command).ConfigureAwait(false);
-                    Assert.AreEqual(++totalCount, count);
+                    Assert.Equals(++totalCount, count);
                 }
 
                 await writer.DisposeAsync().ConfigureAwait(false);
@@ -127,7 +127,7 @@ namespace System.Test
                 //await reader.EnsureVersion(totalCount);
                 var strings = await reader.Execute(new GetStringsQuery()).ConfigureAwait(false);
 
-                Assert.AreEqual(totalCount, strings.Count);
+                Assert.Equals(totalCount, strings.Count);
 
                 await reader.DisposeAsync().ConfigureAwait(false);
             }
@@ -189,7 +189,7 @@ namespace System.Test
 
                 Console.WriteLine($"Count: {strings.Count}");
 
-                Assert.AreEqual(recordsWritten, strings.Count);
+                Assert.Equals(recordsWritten, strings.Count);
 
                 Console.WriteLine("Disposing reader");
                 await engine.DisposeAsync().ConfigureAwait(false);

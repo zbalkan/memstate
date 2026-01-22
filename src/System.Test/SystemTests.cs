@@ -32,7 +32,7 @@ namespace System.Test
             var reader = provider.CreateJournalReader();
             var records = reader.GetRecords().ToArray();
             await reader.DisposeAsync().ConfigureAwait(false);
-            Assert.AreEqual(1, records.Length);
+            Assert.Equals(1, records.Length);
         }
 
         [TestCaseSource(nameof(Configurations))]
@@ -55,7 +55,7 @@ namespace System.Test
             var journalReader = provider.CreateJournalReader();
             var records = journalReader.GetRecords().ToArray();
             await journalReader.DisposeAsync().ConfigureAwait(false);
-            Assert.AreEqual(10000, records.Length);
+            Assert.Equals(10000, records.Length);
         }
 
         [TestCaseSource(nameof(Configurations))]
@@ -89,7 +89,7 @@ namespace System.Test
                     Console.WriteLine("record received # " + r.RecordNumber);
                 });
                 await WaitForConditionOrThrow(() => records.Count == NumRecords).ConfigureAwait(false);
-                Assert.AreEqual(Enumerable.Range(0, NumRecords), records.Select(r => (int)r.RecordNumber));
+                Assert.Equals(Enumerable.Range(0, NumRecords), records.Select(r => (int)r.RecordNumber));
             }
         }
 
@@ -116,7 +116,7 @@ namespace System.Test
             await WaitForConditionOrThrow(() => records.Count == 5).ConfigureAwait(false);
             sub.Dispose();
 
-            Assert.AreEqual(NumRecords, records.Count);
+            Assert.Equals(NumRecords, records.Count);
         }
 
         [TestCaseSource(nameof(Configurations))]
@@ -143,14 +143,14 @@ namespace System.Test
             {
                 var command = new AddStringCommand(number.ToString());
                 var count = await engine.Execute(command).ConfigureAwait(false);
-                Assert.AreEqual(number, count);
+                Assert.Equals(number, count);
             }
 
             await engine.DisposeAsync().ConfigureAwait(false);
 
             engine = await Engine.Start<List<string>>().ConfigureAwait(false);
             var strings = await engine.Execute(new GetStringsQuery()).ConfigureAwait(false);
-            Assert.AreEqual(NumRecords, strings.Count);
+            Assert.Equals(NumRecords, strings.Count);
             await engine.DisposeAsync().ConfigureAwait(false);
         }
 
