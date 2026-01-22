@@ -1,34 +1,30 @@
-﻿using System.IO;
-using Hyperion;
-
+﻿using MessagePack;
+using System.IO;
 namespace Memstate.Wire
 {
     public class WireSerializerAdapter : BinarySerializer
     {
-        private readonly Serializer _serializer;
-
         public WireSerializerAdapter()
         {
-            var options = new SerializerOptions(versionTolerance: false, preserveObjectReferences: true);
 
-            _serializer = new Serializer(options);
+            MessagePackSerializer.DefaultOptions = MessagePack.Resolvers.ContractlessStandardResolver.Options;
         }
 
         public override void WriteObject(Stream stream, object @object)
         {
             if (@object is JournalRecord[])
             {
-                foreach(var record in (@object as JournalRecord[]))
+                foreach (var record in (@object as JournalRecord[]))
                 {
-                    _serializer.Serialize(record, stream);
+                    stream.Write(MessagePackSerializer.Serialize(record));
                 }
             }
-            else _serializer.Serialize(@object, stream);
+            else stream.Write(MessagePackSerializer.Serialize(@object));
         }
 
         public override object ReadObject(Stream stream)
         {
-            return _serializer.Deserialize(stream);
+            return MessagePackSerializer.Deserialize<object>(stream);
         }
     }
 }
