@@ -44,8 +44,8 @@ namespace Memstate.Test
             var bytesRead = new byte[NumBytes];
             readStream.Read(bytesRead, 0, NumBytes);
 
-            Assert.AreEqual(bytesWritten, bytesRead);
-            Assert.AreEqual(NumBytes, readStream.Length);
+            Assert.Equals(bytesWritten, bytesRead);
+            Assert.Equals(NumBytes, readStream.Length);
             readStream.Dispose();
         }
 

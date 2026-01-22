@@ -12,7 +12,7 @@ namespace Memstate.Test
         {
             var config = new Config();
             var serializer = config.CreateSerializer();
-            Assert.NotNull(serializer);
+            Assert.That(null != serializer);
         }
 
         [Test]
@@ -23,7 +23,7 @@ namespace Memstate.Test
             string value = Guid.NewGuid().ToString();
             Environment.SetEnvironmentVariable(varName, value);
             var config = Config.Reset();
-            Assert.True(config.Data.ContainsKey(key));
+            Assert.That(config.Data.ContainsKey(key));
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace Memstate.Test
             string value = Guid.NewGuid().ToString();
             Environment.SetEnvironmentVariable(varName, value);
             var config = Config.Reset();
-            Assert.True(config.Data.ContainsKey(key));
+            Assert.That(config.Data.ContainsKey(key));
         }
 
         [Test]
@@ -45,7 +45,7 @@ namespace Memstate.Test
             string value = Guid.NewGuid().ToString();
             Environment.SetEnvironmentVariable(varName, value);
             var config = Config.Reset();
-            Assert.True(config.Data.ContainsKey(key));
+            Assert.That(config.Data.ContainsKey(key));
         }
     }
 }

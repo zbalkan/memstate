@@ -36,7 +36,7 @@ namespace Memstate.Docs.GettingStarted.QuickStartGraph
             var engine = await Engine.Start<GraphModel>();
 
             Print("THEN a journal file should now exist on the filesystem");
-            Assert.True(File.Exists(JournalFilename));
+            Assert.That(File.Exists(JournalFilename));
 
             Print("WHEN I add some graph data");
             var _user1 = await engine.Execute(new CreateNode("user"));
@@ -50,24 +50,24 @@ namespace Memstate.Docs.GettingStarted.QuickStartGraph
 
             Print("THEN there should be three nodes");
             var nodes = await engine.Execute(new GetNodes());
-            Assert.AreEqual(3, nodes.Count());
+            Assert.Equals(3, nodes.Count());
 
             Print("THEN there should be four edges");
             var edges = await engine.Execute(new GetEdges());
-            Assert.AreEqual(4, edges.Count());
+            Assert.Equals(4, edges.Count());
 
             Print("THEN there should be one user with one tweet");
             var usersWithTweets = await engine.Execute(new GetUsersWithTweets());
-            Assert.AreEqual(1, usersWithTweets.Count());
+            Assert.Equals(1, usersWithTweets.Count());
 
             Print("THEN there should be one tweet with null likes");
-            Assert.AreEqual(null, usersWithTweets.First().Get("likes"));
+            Assert.Equals(null, usersWithTweets.First().Get("likes"));
 
             Print("WHEN I increment likes");
             var tweet = await engine.Execute(new IncrementLikes(_tweet.Id));
 
             Print("THEN there should be one like");
-            Assert.AreEqual(1, tweet.Get("likes"));
+            Assert.Equals(1, tweet.Get("likes"));
 
             Print("WHEN I dispose of the memstate engine");
             await engine.DisposeAsync();
@@ -75,31 +75,31 @@ namespace Memstate.Docs.GettingStarted.QuickStartGraph
             //////// Replay
 
             Print("THEN a journal file should still exist with all the commands I've played up to now");
-            Assert.True(File.Exists(JournalFilename));
+            Assert.That(File.Exists(JournalFilename));
 
             Print("WHEN I start up another engine the entire journal at this point should immediately replay all the journaled commands saved to the filesystem");
             engine = await Engine.Start<GraphModel>();
 
             Print("THEN there should still be three nodes");
             var nodes2 = await engine.Execute(new GetNodes());
-            Assert.AreEqual(3, nodes2.Count());
+            Assert.Equals(3, nodes2.Count());
 
             Print("THEN there should still be four edges");
             var edges2 = await engine.Execute(new GetEdges());
-            Assert.AreEqual(4, edges2.Count());
+            Assert.Equals(4, edges2.Count());
 
             Print("THEN there should still be one user");
             var usersWithTweets2 = await engine.Execute(new GetUsersWithTweets());
-            Assert.AreEqual(1, usersWithTweets2.Count());
+            Assert.Equals(1, usersWithTweets2.Count());
 
             Print("THEN that user should still have one tweet");
-            Assert.AreEqual(1, usersWithTweets.First().Get("likes"));
+            Assert.Equals(1, usersWithTweets.First().Get("likes"));
 
             Print("WHEN I increment likes");
             var tweet2 = await engine.Execute(new IncrementLikes(_tweet.Id));
 
             Print("THEN there should be one like");
-            Assert.AreEqual(2, tweet2.Get("likes"));
+            Assert.Equals(2, tweet2.Get("likes"));
 
             await engine.DisposeAsync();
         }

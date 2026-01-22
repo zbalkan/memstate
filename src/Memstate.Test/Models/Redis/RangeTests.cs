@@ -11,8 +11,8 @@ namespace Memstate.Test.Models.Redis
         {
             var target = new Range(2, 6, 8).Flip(8);
             
-            Assert.AreEqual(1, target.FirstIdx);
-            Assert.AreEqual(5, target.LastIdx);
+            Assert.Equals(1, target.FirstIdx);
+            Assert.Equals(5, target.LastIdx);
         }
 
         [Test]
@@ -20,9 +20,9 @@ namespace Memstate.Test.Models.Redis
         {
             var target = new Range(0, 99);
             
-            Assert.AreEqual(0, target.FirstIdx);
-            Assert.AreEqual(99, target.LastIdx);
-            Assert.AreEqual(100, target.Length);
+            Assert.Equals(0, target.FirstIdx);
+            Assert.Equals(99, target.LastIdx);
+            Assert.Equals(100, target.Length);
         }
         
         [Test]
@@ -30,9 +30,9 @@ namespace Memstate.Test.Models.Redis
         {
             var target = new Range(0, -2, 100);
             
-            Assert.AreEqual(0, target.FirstIdx);
-            Assert.AreEqual(98, target.LastIdx);
-            Assert.AreEqual(99, target.Length);
+            Assert.Equals(0, target.FirstIdx);
+            Assert.Equals(98, target.LastIdx);
+            Assert.Equals(99, target.Length);
         }
     }
 }

@@ -43,21 +43,21 @@ namespace Memstate.Docs.GettingStarted.QuickStart
             }
 
             Print("THEN a journal file should now exist on the filesystem");
-            Assert.True(File.Exists(WireJournalFile));
+            Assert.That(File.Exists(WireJournalFile));
 
             Print("WHEN customer 5 and customer 12 each earn 190 and 290 loyalty points respectively");
             var c1 = await engine.Execute(new EarnPoints(5, 190));
             var c2 = await engine.Execute(new EarnPoints(12, 290));
 
             Print("THEN the balance for them will have increased to 200 and 300 loyalty points for customer 5 and 12 respectively");
-            Assert.AreEqual(200, c1.LoyaltyPointBalance);
-            Assert.AreEqual(300, c2.LoyaltyPointBalance);
+            Assert.Equals(200, c1.LoyaltyPointBalance);
+            Assert.Equals(300, c2.LoyaltyPointBalance);
 
             Print("WHEN I dispose of the memstate engine");
             await engine.DisposeAsync();
 
             Print("THEN a journal file should still exist with all the commands I've played up to now");
-            Assert.True(File.Exists(WireJournalFile));
+            Assert.That(File.Exists(WireJournalFile));
 
             Print("WHEN I start up another engine");
             engine = await Engine.Start<LoyaltyDB>();
@@ -66,9 +66,9 @@ namespace Memstate.Docs.GettingStarted.QuickStart
             var allCustomers = await engine.Execute(new GetCustomers());
 
             Print("AND the database should be restored to the exact same state it was after the last command was executed");
-            Assert.AreEqual(20, allCustomers.Count);
-            Assert.AreEqual(200, allCustomers[5].LoyaltyPointBalance);
-            Assert.AreEqual(300, allCustomers[12].LoyaltyPointBalance);
+            Assert.Equals(20, allCustomers.Count);
+            Assert.Equals(200, allCustomers[5].LoyaltyPointBalance);
+            Assert.Equals(300, allCustomers[12].LoyaltyPointBalance);
 
             await engine.DisposeAsync();
         }
@@ -97,20 +97,20 @@ namespace Memstate.Docs.GettingStarted.QuickStart
             await engine.Execute(new InitCustomer(20, 20));
 
             Print("THEN a journal file should now exist on the filesystem");
-            Assert.True(File.Exists(JsonJournalFile));
+            Assert.That(File.Exists(JsonJournalFile));
 
             Print("WHEN customer 10 transfers 5 points to customer 20");
             var result = await engine.Execute(new TransferPoints(10, 20, 5));
 
             Print("THEN the new balance for them will be 5 and 25 respectively");
-            Assert.AreEqual(5, result.Sender.LoyaltyPointBalance);
-            Assert.AreEqual(25, result.Recipient.LoyaltyPointBalance);
+            Assert.Equals(5, result.Sender.LoyaltyPointBalance);
+            Assert.Equals(25, result.Recipient.LoyaltyPointBalance);
 
             Print("WHEN I dispose of the memstate engine");
             await engine.DisposeAsync();
 
             Print("THEN a journal file should still exist with all the commands I've played up to now");
-            Assert.True(File.Exists(JsonJournalFile));
+            Assert.That(File.Exists(JsonJournalFile));
 
             Print("WHEN I start up another engine");
             engine = await Engine.Start<LoyaltyDB>();
@@ -119,9 +119,9 @@ namespace Memstate.Docs.GettingStarted.QuickStart
             var allCustomers = await engine.Execute(new GetCustomers());
 
             Print("AND the database should be restored to the exact same state it was after the last command was executed");
-            Assert.AreEqual(2, allCustomers.Count);
-            Assert.AreEqual(5, allCustomers[10].LoyaltyPointBalance);
-            Assert.AreEqual(25, allCustomers[20].LoyaltyPointBalance);
+            Assert.Equals(2, allCustomers.Count);
+            Assert.Equals(5, allCustomers[10].LoyaltyPointBalance);
+            Assert.Equals(25, allCustomers[20].LoyaltyPointBalance);
 
             await engine.DisposeAsync();
         }

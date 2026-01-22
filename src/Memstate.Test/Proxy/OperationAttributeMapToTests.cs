@@ -63,8 +63,8 @@ namespace Memstate.Test.DispatchProxy
 
             // If MapTo is correct, a SetCustomerCommand will be written to the journal
             // if not, then a ProxyCommand will be written
-            Assert.NotNull(journalEntry);
-            Assert.IsInstanceOf<SetCustomerCommand>(journalEntry.Command);
+            Assert.That(null != journalEntry);
+            Assert.That(journalEntry.Command is SetCustomerCommand);
         }
     }
 }

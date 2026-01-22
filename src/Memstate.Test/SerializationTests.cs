@@ -28,8 +28,8 @@ namespace Memstate.Test
 
             stream.Position = 0;
             var clone = (Poco) serializer.ReadObject(stream);
-            Assert.AreEqual(poco.Name, clone.Name);
-            Assert.AreEqual(poco.Age, clone.Age);
+            Assert.Equals(poco.Name, clone.Name);
+            Assert.Equals(poco.Age, clone.Age);
         }
 
         [Test, TestCaseSource(nameof(Serializers))]
@@ -37,7 +37,7 @@ namespace Memstate.Test
         {
             var command = new Create("dummy");
             var clone = serializer.Clone(command);
-            Assert.AreEqual(command.Id, clone.Id);
+            Assert.Equals(command.Id, clone.Id);
         }
 
         [Test, TestCaseSource(nameof(Serializers))]
@@ -45,7 +45,7 @@ namespace Memstate.Test
         {
             var poco = new PocoWithReadonlyFields("homer");
             var clone = serializer.Clone(poco);
-            Assert.AreEqual("homer", clone.Name);
+            Assert.Equals("homer", clone.Name);
         }
 
         [Test, TestCaseSource(nameof(Serializers))]
@@ -53,7 +53,7 @@ namespace Memstate.Test
         {
             var poco = new PocoWithPrivateSettersAndNoDefaultConstructor("homer");
             var clone = serializer.Clone(poco);
-            Assert.AreEqual("homer", clone.Name);
+            Assert.Equals("homer", clone.Name);
         }
 
     }

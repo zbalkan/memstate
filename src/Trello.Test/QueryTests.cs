@@ -22,10 +22,10 @@ namespace Trello.Test
 
             var query = new GetBoardsQuery();
             var boards = query.Execute(_model);
-            Assert.AreEqual(3, boards.Count);
-            Assert.AreEqual("a", boards[0].Name);
-            Assert.AreEqual("B", boards[1].Name);
-            Assert.AreEqual("c", boards[2].Name);
+            Assert.Equals(3, boards.Count);
+            Assert.Equals("a", boards[0].Name);
+            Assert.Equals("B", boards[1].Name);
+            Assert.Equals("c", boards[2].Name);
         }
     }
 }

@@ -24,20 +24,20 @@ namespace Memstate.Test
         [Test, TestCaseSource(nameof(Keys))]
         public void NoSection(string key)
         {
-            Assert.True(_config.Data.ContainsKey(key));
-            Assert.AreEqual(key, _config.Data[key]);
+            Assert.That(_config.Data.ContainsKey(key));
+            Assert.Equals(key, _config.Data[key]);
         }
 
         [Test]
         public void ValueWithWhitespace()
         {
-            Assert.AreEqual("white space", _config.Data["whitespace"]);
+            Assert.Equals("white space", _config.Data["whitespace"]);
         }
 
         [Test, TestCaseSource(nameof(CompositeKeys))]
         public void Sections(string key)
         {
-            Assert.True(key.EndsWith(_config.Data[key], System.StringComparison.OrdinalIgnoreCase));
+            Assert.That(key.EndsWith(_config.Data[key], System.StringComparison.OrdinalIgnoreCase));
         }
 
         private static IEnumerable<string> CompositeKeys()

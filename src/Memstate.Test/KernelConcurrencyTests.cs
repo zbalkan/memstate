@@ -85,7 +85,7 @@ namespace Memstate.Test
                     var query = new AccountsSummed();
                     var sum =  _kernel.Execute(query);
                     //the sum at any given point in time should always be 0
-                    Assert.AreEqual(0,sum);
+                    Assert.Equals(0,sum);
                 }
             });
             await Task.WhenAll(commandTask, queryTask);

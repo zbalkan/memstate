@@ -20,7 +20,7 @@ namespace Memstate.Test
             var blockingCollection = new BlockingCollection<int>();
             blockingCollection.CompleteAdding();
             var actual = blockingCollection.TryTake(out var item);
-            Assert.False(actual);
+            Assert.That(!actual);
         }
     }
 }

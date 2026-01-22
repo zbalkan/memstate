@@ -13,8 +13,8 @@ namespace Memstate.Test.Models.Redis
 
             Target.Clear();
             
-            Assert.AreEqual(0, Target.KeyCount());
-            Assert.IsEmpty(Target.Keys());
+            Assert.Equals(0, Target.KeyCount());
+            Assert.That(Target.Keys().Length == 0);
         }
 
         [Test]
@@ -22,7 +22,7 @@ namespace Memstate.Test.Models.Redis
         {
             Target.Set("key", "value");
             
-            Assert.IsTrue(Target.Exists("key"));
+            Assert.That(Target.Exists("key"));
         }
 
         [Test]
@@ -32,7 +32,7 @@ namespace Memstate.Test.Models.Redis
 
             Target.Delete("key");
             
-            Assert.IsFalse(Target.Exists("key"));
+            Assert.That(!Target.Exists("key"));
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace Memstate.Test.Models.Redis
 
             var actual = Target.Delete("number", "name");
             
-            Assert.AreEqual(2, actual);
+            Assert.Equals(2, actual);
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace Memstate.Test.Models.Redis
         {
             var actual = Target.RandomKey();
             
-            Assert.IsNull(actual);
+            Assert.That(null == actual);
         }
     }
 }

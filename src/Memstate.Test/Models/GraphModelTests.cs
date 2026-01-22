@@ -46,7 +46,7 @@ namespace Memstate.Test.Models
             Expression<Func<GraphModel, int>> query =
                 g => g.Nodes.Count(n => n.Label == "user" && n.Out.Any(e => e.Label == "tweeted"));
             var result = _graph.Query(query);
-            Assert.AreEqual(1, result);
+            Assert.Equals(1, result);
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace Memstate.Test.Models
                 g => g.Nodes.Where(n => n.Label == "tweet")
                 .Max(n => n.In.Count(e => e.Label == "retweeted"));
             var result = _graph.Query(query);
-            Assert.AreEqual(1, result);
+            Assert.Equals(1, result);
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace Memstate.Test.Models
                 g => g.Nodes.Where(n => n.Out.Any(e => n.In.Contains(e)));
 
             var node = _graph.Query(query).Single();
-            Assert.AreEqual(node.Id, _user1);
+            Assert.Equals(node.Id, _user1);
         }
 
         [Test]
@@ -75,12 +75,12 @@ namespace Memstate.Test.Models
             Expression<Func<GraphModel, GraphModel.Node>> query =
                 g => g.Nodes.First(n => n.Label == "tweet");
             var node = _graph.Query(query);
-            Assert.AreEqual(typeof(GraphModel.Node), node.GetType());
+            Assert.Equals(typeof(GraphModel.Node), node.GetType());
 
             node.Set("testkey", "testvalue");
 
             node = _graph.Query(query);
-            Assert.AreEqual("testvalue", node.Props["testkey"]);
+            Assert.Equals("testvalue", node.Props["testkey"]);
         }
     }
 }

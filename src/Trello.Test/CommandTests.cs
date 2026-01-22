@@ -20,8 +20,8 @@ namespace Trello.Test
             var command = new CreateBoardCommand("A board");
             var id = command.Execute(_model);
             var board = _model.Boards.Values.Single();
-            Assert.AreEqual(id, board.Id);
-            Assert.AreEqual(command.BoardName, board.Name);
+            Assert.Equals(id, board.Id);
+            Assert.Equals(command.BoardName, board.Name);
         }
     }
 }

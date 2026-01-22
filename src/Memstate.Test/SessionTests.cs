@@ -36,8 +36,8 @@ namespace Memstate.Test
             var request = new CommandRequest(command);
             await _session.Handle(request);
             var response = AssertAndGetSingle<ExceptionResponse>();
-            Assert.AreEqual(request.Id, response.ResponseTo);
-            Assert.IsAssignableFrom<InvalidCastException>(response.Exception);
+            Assert.Equals(request.Id, response.ResponseTo);
+            Assert.That(response.Exception is InvalidCastException);
         }
 
         [Test]
@@ -49,7 +49,7 @@ namespace Memstate.Test
             await _session.Handle(request);
 
             var response = AssertAndGetSingle<ExceptionResponse>();
-            Assert.AreEqual(request.Id, response.ResponseTo);
+            Assert.Equals(request.Id, response.ResponseTo);
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace Memstate.Test
             await _session.Handle(request);
 
             var response = AssertAndGetSingle<ExceptionResponse>();
-            Assert.AreEqual(request.Id, response.ResponseTo);
+            Assert.Equals(request.Id, response.ResponseTo);
         }
 
         [Test]
@@ -73,11 +73,11 @@ namespace Memstate.Test
 
             await _session.Handle(queryRequest);
 
-            Assert.IsTrue(_messagesEmitted.Count == 1);
+            Assert.That(_messagesEmitted.Count == 1);
             var response = (QueryResponse)_messagesEmitted.Single();
-            Assert.AreEqual(queryRequest.Id, response.ResponseTo);
+            Assert.Equals(queryRequest.Id, response.ResponseTo);
             var node = (KeyValueStore<int>.Node)response.Result;
-            Assert.AreEqual(42, node.Value);
+            Assert.Equals(42, node.Value);
         }
 
         [Test]
@@ -86,8 +86,8 @@ namespace Memstate.Test
             var commandRequest = new CommandRequest(new Set<int>("KEY", 42));
             await _session.Handle(commandRequest);
             var response = AssertAndGetSingle<CommandResponse>();
-            Assert.AreEqual(commandRequest.Id, response.ResponseTo);
-            Assert.AreEqual(1, (int)response.Result);
+            Assert.Equals(commandRequest.Id, response.ResponseTo);
+            Assert.Equals(1, (int)response.Result);
         }
 
         [Test]
@@ -98,11 +98,11 @@ namespace Memstate.Test
 
             await _session.Handle(request);
 
-            Assert.AreEqual(0, _testModel.Count());
+            Assert.Equals(0, _testModel.Count());
 
             var response = AssertAndGetSingle<CommandResponse>();
-            Assert.AreEqual(request.Id, response.ResponseTo);
-            Assert.IsNull(response.Result);
+            Assert.Equals(request.Id, response.ResponseTo);
+            Assert.That(null == response.Result);
         }
 
         [Test]
@@ -111,7 +111,7 @@ namespace Memstate.Test
             var request  = new Ping();
             await _session.Handle(request);
             var pong = AssertAndGetSingle<Pong>();
-            Assert.AreEqual(request.Id, pong.ResponseTo);
+            Assert.Equals(request.Id, pong.ResponseTo);
         }
 
         [Test]
@@ -121,15 +121,15 @@ namespace Memstate.Test
             await _session.Handle(message);
 
             var response = AssertAndGetSingle<ExceptionResponse>();
-            Assert.IsAssignableFrom<Exception>(response.Exception);
-            Assert.AreEqual(message.Id, response.ResponseTo);
+            Assert.That(response.Exception is Exception);
+            Assert.Equals(message.Id, response.ResponseTo);
         }
 
         private T AssertAndGetSingle<T>() where T : Message
         {
-            Assert.IsTrue(_messagesEmitted.Count == 1);
+            Assert.That(_messagesEmitted.Count == 1);
             var message = _messagesEmitted.Single();
-            Assert.IsAssignableFrom<T>(message);
+            Assert.That(message is T);
             return (T)message;
         }
 

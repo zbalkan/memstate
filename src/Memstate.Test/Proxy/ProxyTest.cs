@@ -29,21 +29,21 @@ namespace Memstate.Test.Proxy
         {
             int expected = _proxy.CommandsExecuted + 1;
             _proxy.MyProperty = 42;
-            Assert.AreEqual(expected, _proxy.CommandsExecuted);
+            Assert.Equals(expected, _proxy.CommandsExecuted);
         }
 
         [Test]
         public void CanExecuteCommandMethod()
         {
             _proxy.IncreaseNumber();
-            Assert.AreEqual(1, _proxy.CommandsExecuted);
+            Assert.Equals(1, _proxy.CommandsExecuted);
         }
 
         [Test]
         public void CanExecuteCommandWithResultMethod()
         {
-            Assert.AreEqual("MEMSTATE", _proxy.Uppercase("memstate"));
-            Assert.AreEqual(1, _proxy.CommandsExecuted);
+            Assert.Equals("MEMSTATE", _proxy.Uppercase("memstate"));
+            Assert.Equals(1, _proxy.CommandsExecuted);
         }
 
         [Test]
@@ -57,7 +57,7 @@ namespace Memstate.Test.Proxy
         public void CanExecuteQueryMethod()
         {
             var number = _proxy.GetCommandsExecuted();
-            Assert.AreEqual(0, number);
+            Assert.Equals(0, number);
         }
 
         [Test]
@@ -67,7 +67,7 @@ namespace Memstate.Test.Proxy
             _proxy.AddCustomer("Robert");
             Customer robert = _proxy.GetCustomers().First();
             Customer robert2 = _proxy.GetCustomers().First();
-            Assert.AreNotEqual(robert, robert2);
+            Assert.That(robert != robert2);
         }
 
         [Test]
@@ -76,7 +76,7 @@ namespace Memstate.Test.Proxy
             _proxy.AddCustomer("Robert");
             Customer robert = _proxy.GetCustomersCloned().First();
             Customer robert2 = _proxy.GetCustomersCloned().First();
-            Assert.AreEqual(robert, robert2);
+            Assert.Equals(robert, robert2);
         }
 
         [Test]
@@ -86,7 +86,7 @@ namespace Memstate.Test.Proxy
             var map = MethodMap.MapFor<MethodMapTests.TestModel>();
             var signature = typeof(MethodMapTests.TestModel).GetMethod("GetCustomersCloned").ToString();
             var operationInfo = map.GetOperationInfo(signature);
-            Assert.True(operationInfo.OperationAttribute.Isolation.HasFlag(IsolationLevel.Output));
+            Assert.That(operationInfo.OperationAttribute.Isolation.HasFlag(IsolationLevel.Output));
         }
 
         [Test]
@@ -95,64 +95,64 @@ namespace Memstate.Test.Proxy
         {
             var customer = new Customer();
             var clone = _proxy.GenericQuery(customer);
-            Assert.AreNotSame(clone, customer);
-            Assert.IsInstanceOf<Customer>(clone);
+            Assert.That(clone != customer);
+            Assert.That(clone is Customer);
         }
 
         [Test]
         public void GenericCommand()
         {
             _proxy.GenericCommand(DateTime.Now);
-            Assert.AreEqual(1, _proxy.CommandsExecuted);
+            Assert.Equals(1, _proxy.CommandsExecuted);
         }
 
         [Test]
         public void ComplexGeneric()
         {
             double result = _proxy.ComplexGeneric(new KeyValuePair<string, double>("dog", 42.0));
-            Assert.AreEqual(42.0, result, 0.0001);
-            Assert.AreEqual(1, _proxy.CommandsExecuted);
+            Assert.Equals(42.0, result);
+            Assert.Equals(1, _proxy.CommandsExecuted);
         }
 
         [Test]
         public void Indexer()
         {
             _proxy.AddCustomer("Homer");
-            Assert.AreEqual(1, _proxy.CommandsExecuted);
+            Assert.Equals(1, _proxy.CommandsExecuted);
 
             var customer = _proxy[0];
-            Assert.AreEqual("Homer", customer.Name);
+            Assert.Equals("Homer", customer.Name);
 
             customer.Name = "Bart";
             _proxy[0] = customer;
-            Assert.AreEqual(2, _proxy.CommandsExecuted);
+            Assert.Equals(2, _proxy.CommandsExecuted);
             var customers = _proxy.GetCustomers();
-            Assert.True(customers.Single().Name == "Bart");
+            Assert.That(customers.Single().Name == "Bart");
         }
 
         [Test]
         public void DefaultArgs()
         {
             var result = _proxy.DefaultArgs(10, 10);
-            Assert.AreEqual(62, result);
+            Assert.Equals(62, result);
 
             result = _proxy.DefaultArgs(10, 10, 10);
-            Assert.AreEqual(30, result);
+            Assert.Equals(30, result);
         }
 
         [Test]
         public void NamedArgs()
         {
             var result = _proxy.DefaultArgs(b: 4, a: 2);
-            Assert.AreEqual(48, result);
+            Assert.Equals(48, result);
         }
 
         [Test]
         public void ExplicitGeneric()
         {
             var dt = _proxy.ExplicitGeneric<DateTime>();
-            Assert.IsInstanceOf<DateTime>(dt);
-            Assert.AreEqual(default(DateTime), dt);
+            Assert.That(dt is DateTime);
+            Assert.Equals(default(DateTime), dt);
         }
 
         [Test]

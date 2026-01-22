@@ -55,8 +55,8 @@ namespace Memstate.Test
 
             //we should be able to execute a query
             var numKeys = await _engine.Execute(new Count<int>()).ConfigureAwait(false);
-            Assert.AreEqual(2, numKeys);
-            Assert.AreEqual(2, _engine.LastRecordNumber);
+            Assert.Equals(2, numKeys);
+            Assert.Equals(2, _engine.LastRecordNumber);
         }
 
         private void Initialize()

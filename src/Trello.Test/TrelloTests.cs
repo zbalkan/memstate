@@ -18,7 +18,7 @@ namespace Trello.Test
         public void CreateBoard()
         {
             var id = _model.CreateBoard("a board");
-            Assert.AreEqual(8, id.Length);
+            Assert.Equals(8, id.Length);
         }
 
         [Test]
@@ -27,7 +27,7 @@ namespace Trello.Test
             var name = "a board";
             var id = _model.CreateBoard(name);
             var board = _model.Boards[id];
-            Assert.AreEqual(name, board.Name);
+            Assert.Equals(name, board.Name);
         }
 
         [Test]
@@ -36,7 +36,7 @@ namespace Trello.Test
             var name = "a board";
             var id = _model.CreateBoard(name);
             var board = _model.Boards[id];
-            Assert.AreEqual(name, board.Name);
+            Assert.Equals(name, board.Name);
         }
     }
 }

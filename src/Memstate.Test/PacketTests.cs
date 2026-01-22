@@ -20,14 +20,14 @@ namespace Memstate.Test
         public void IsTerminal_is_default_when_calling_constructor()
         {
             var packet = new Packet();
-            Assert.IsTrue(packet.IsTerminal);
+            Assert.That(packet.IsTerminal);
         }
 
         [Test]
         public void IsTerminal_is_default_when_creating_from_factory_method()
         {
             Packet packet = Packet.Create(new byte[42], 42);
-            Assert.IsTrue(packet.IsTerminal);
+            Assert.That(packet.IsTerminal);
         }
 
         [TestCaseSource(nameof(_payloadSizes))]
@@ -37,7 +37,7 @@ namespace Memstate.Test
 
             var memoryStream = new MemoryStream();
             await packet.WriteTo(memoryStream);
-            Assert.AreEqual(memoryStream.Length, packet.Size);
+            Assert.Equals(memoryStream.Length, packet.Size);
         }
 
         [TestCaseSource(nameof(_payloadSizes))]
@@ -54,10 +54,10 @@ namespace Memstate.Test
             Packet copy = await Packet.Read(stream, token);
 
             //Assert
-            Assert.AreEqual(packet.Size, copy.Size);
-            Assert.AreEqual(packet.MessageId, copy.MessageId);
-            Assert.AreEqual(packet.Info, copy.Info);
-            Assert.AreEqual(packet.Payload.Length, copy.Payload.Length);
+            Assert.Equals(packet.Size, copy.Size);
+            Assert.Equals(packet.MessageId, copy.MessageId);
+            Assert.Equals(packet.Info, copy.Info);
+            Assert.Equals(packet.Payload.Length, copy.Payload.Length);
         }
 
         [Ignore("Doesn't terminate")]
@@ -78,15 +78,15 @@ namespace Memstate.Test
                 // await Task.Delay(TimeSpan.FromMilliseconds(5));
 
                 //Assert
-                Assert.IsFalse(task.IsCompleted);
+                Assert.That(!task.IsCompleted);
                 Assert.ThrowsAsync<TaskCanceledException>(async () =>
                 {
                     cancellationSource.Cancel();
                     await task;
                 });
 
-                Assert.IsTrue(task.IsCompleted);
-                Assert.IsTrue(task.IsFaulted);
+                Assert.That(task.IsCompleted);
+                Assert.That(task.IsFaulted);
             }
         }
     }

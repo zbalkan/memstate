@@ -60,56 +60,56 @@ namespace Memstate.Test.Proxy
         public void Maps_are_cached()
         {
             var map = MethodMap.MapFor<TestModel>();
-            Assert.AreEqual(_map, map);
+            Assert.Equals(_map, map);
         }
 
         [Test]
         public void Implicit_command_IsCommand()
         {
             var target = _map. GetOperationInfo("ImplicitCommand");
-            Assert.True(target is CommandInfo<TestModel>);
+            Assert.That(target is CommandInfo<TestModel>);
         }
 
         [Test]
         public void Explicit_command_IsCommand()
         {
             var target = _map.GetOperationInfo("ExplicitCommandWithResult");
-            Assert.True(target is CommandInfo<TestModel>);
+            Assert.That(target is CommandInfo<TestModel>);
         }
 
         [Test]
         public void Implicit_query_IsQuery()
         {
             var target = _map.GetOperationInfo("ImplicitQuery");
-            Assert.True(target is QueryInfo<TestModel>);
+            Assert.That(target is QueryInfo<TestModel>);
         }
 
         [Test]
         public void NoProxy_is_disallowed()
         {
             var target = _map.GetOperationInfo("NoProxyQuery");
-            Assert.False(target.IsAllowed);
+            Assert.That(!target.IsAllowed);
         }
 
         [Test]
         public void Default_ResultIsIsolated_is_false_implicit()
         {
             var target = _map.GetOperationInfo("ImplicitQuery");
-            Assert.False(target.OperationAttribute.Isolation.HasFlag(IsolationLevel.Output));
+            Assert.That(!target.OperationAttribute.Isolation.HasFlag(IsolationLevel.Output));
         }
 
         [Test]
         public void Default_ResultIsIsolated_is_false_for_explicit()
         {
             var target = _map.GetOperationInfo("ExplicitCommandWithResult");
-            Assert.False(target.OperationAttribute.Isolation.HasFlag(IsolationLevel.Output));
+            Assert.That(!target.OperationAttribute.Isolation.HasFlag(IsolationLevel.Output));
         }
 
         [Test]
         public void Explicit_ResultIsIsolated_is_reported()
         {
             var target = _map.GetOperationInfo("MvccOperation");
-            Assert.False(target.OperationAttribute.Isolation.HasFlag(IsolationLevel.Output));
+            Assert.That(!target.OperationAttribute.Isolation.HasFlag(IsolationLevel.Output));
         }
 
         [Test]

@@ -84,14 +84,14 @@ namespace Memstate.Test.Models
         public void GeoPointToString()
         {
             var gp = new GeoPoint(10,20);
-            Assert.AreEqual("[10:20]", gp.ToString());
+            Assert.Equals("[10:20]", gp.ToString());
         }
 
         [Test]
         public void DistanceToSelfShouldBeZero()
         {
             var gp = new GeoPoint(10, 10);
-            Assert.AreEqual(0D, gp.DistanceTo(gp).Radians, 0.0001);
+            Assert.Equals(0D, gp.DistanceTo(gp).Radians);
         }
 
         [Test, TestCaseSource("TestCases")]
@@ -99,9 +99,9 @@ namespace Memstate.Test.Models
         {
             var actual = GeoPoint.Distance(a, b);
             var actualInverse = GeoPoint.Distance(b, a);
-            Assert.AreEqual(actual, actualInverse, "dist(b,a) should equal dist(a,b)");
+            Assert.Equals(actual, actualInverse);
             double faultTolerance = expectedDistance * 0.005;
-            Assert.AreEqual(expectedDistance, actual.ToKilometers(), faultTolerance);
+            Assert.Equals(expectedDistance, actual.ToKilometers());
         }
 
         [Test, TestCaseSource("TestData")]
@@ -117,7 +117,7 @@ namespace Memstate.Test.Models
             {
                 var kms = keyValuePair.Value.ToKilometers();
                 Console.WriteLine($"{keyValuePair.Key} at distance {kms} km" );
-                Assert.IsTrue(keyValuePair.Value.ToKilometers() <= radius);
+                Assert.That(keyValuePair.Value.ToKilometers() <= radius);
             }
 
             //Double check and print any errors
@@ -139,7 +139,7 @@ namespace Memstate.Test.Models
                 }
                 
             }
-            Assert.IsTrue(failures == 0, "failures: " + failures);
+            Assert.That(failures == 0, "failures: " + failures);
         }
 
 

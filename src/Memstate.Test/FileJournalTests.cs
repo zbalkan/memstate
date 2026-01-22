@@ -38,11 +38,11 @@ namespace Memstate.Test
 
             //Get back all the entries, should be NumRecords
             var reader = provider.CreateJournalReader();
-            Assert.AreEqual(NumRecords, reader.GetRecords().Count());
+            Assert.Equals(NumRecords, reader.GetRecords().Count());
             await reader.DisposeAsync().ConfigureAwait(false);
 
             //Count the actual lines in the file
-            Assert.IsTrue(cfg.FileSystem.Exists(FileName));
+            Assert.That(cfg.FileSystem.Exists(FileName));
             var streamReader = new StreamReader(cfg.FileSystem.OpenRead(FileName));
             var lines = 0;
             while (true)
@@ -52,7 +52,7 @@ namespace Memstate.Test
                 Console.WriteLine("> " + line);
                 lines++;
             }
-            Assert.AreEqual(NumRecords, lines);
+            Assert.Equals(NumRecords, lines);
 
         }
     }

@@ -34,7 +34,7 @@ namespace Memstate.Test.EngineBuilderTests
             }
             catch (Exception ex)
             {
-                StringAssert.Contains("Please check to see if you need to add a reference to 'Memstate.Wire', or 'Memstate.JsonNet'. Adding any of these two nuget packages will automatically use either package for serialisation.", ex.Message);
+                Assert.Fail($"Please check to see if you need to add a reference to 'Memstate.Wire', or 'Memstate.JsonNet'. Adding any of these two nuget packages will automatically use either package for serialisation. {ex.Message}");
             }
         }
     }

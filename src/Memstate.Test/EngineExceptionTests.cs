@@ -35,7 +35,7 @@ namespace Memstate.EngineTest
                     caught = e;
                 }
 
-                Assert.True(caught is NotFoundException);
+                Assert.That(caught is NotFoundException);
                 
                 //add the customer with the missing id
                 await db.Execute(new InitCustomer(2, 10));

@@ -35,13 +35,13 @@ namespace Memstate.Test
             await _client.Execute(new Delete(wittgenstein.Id));
 
             //we shouldn't see a Deleted event for user Wittgenstein
-            Assert.AreEqual(0, eventsReceived.Count);
+            Assert.Equals(0, eventsReceived.Count);
 
             await _client.Execute(new Delete(kant.Id));
 
             //we should now have 1 Deleted event for user Kant
-            Assert.AreEqual(1, eventsReceived.Count);
-            Assert.AreEqual(kant.Id, (eventsReceived[0] as Deleted)?.UserId);
+            Assert.Equals(1, eventsReceived.Count);
+            Assert.Equals(kant.Id, (eventsReceived[0] as Deleted)?.UserId);
         }
 
         [Test]
@@ -53,7 +53,7 @@ namespace Memstate.Test
             var user = await _client.Execute(new Create("Memstate"));
             await _client.Execute(new Delete(user.Id));
             
-            Assert.AreEqual(1, handledEvents);
+            Assert.Equals(1, handledEvents);
         }
 
         [Test]
@@ -65,10 +65,10 @@ namespace Memstate.Test
             await _client.Subscribe<Deleted>(e => handledEvents++);
 
             var user = await _client.Execute(new Create("Memstate"));
-            Assert.AreEqual(1, handledEvents);
+            Assert.Equals(1, handledEvents);
 
             await _client.Execute(new Delete(user.Id));
-            Assert.AreEqual(2, handledEvents);
+            Assert.Equals(2, handledEvents);
         }
 
         [Test]
@@ -82,13 +82,13 @@ namespace Memstate.Test
 
             await _client.Execute(new Create("Memstate"));
 
-            Assert.AreEqual(1, eventsReceived.Count);
+            Assert.Equals(1, eventsReceived.Count);
 
             await _client.Unsubscribe<Created>();
 
             await _client.Execute(new Create("Origo"));
             
-            Assert.AreEqual(1, eventsReceived.Count);
+            Assert.Equals(1, eventsReceived.Count);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Memstate.Test.Models
 
             var node = _store.Get("EXISTING_KEY");
 
-            Assert.AreEqual("VALUE", node.Value);
+            Assert.Equals("VALUE", node.Value);
         }
 
         [Test]
@@ -32,7 +32,7 @@ namespace Memstate.Test.Models
 
             var node = _store.Get("EXISTING_KEY");
 
-            Assert.AreEqual("VALUE", node.Value);
+            Assert.Equals("VALUE", node.Value);
         }
 
         [Test]
@@ -64,8 +64,8 @@ namespace Memstate.Test.Models
 
             var node = _store.Get("EXISTING_KEY");
 
-            Assert.True(newVersion > version);
-            Assert.AreEqual("NEW_VALUE", node.Value);
+            Assert.That(newVersion > version);
+            Assert.Equals("NEW_VALUE", node.Value);
         }
 
         [Test]

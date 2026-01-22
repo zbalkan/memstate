@@ -22,10 +22,10 @@ namespace Memstate.Test.Models.Redis
             target.Expire(key, expires);
             Thread.Sleep(TimeSpan.FromMilliseconds(1));
             var keys = target.GetExpiredKeys();
-            Assert.IsTrue(keys.Single() == key);
+            Assert.That(keys.Single() == key);
             var expected = target.Expires(key);
-            Assert.IsTrue(expected.HasValue);
-            Assert.AreEqual(expected.Value, expires);
+            Assert.That(expected.HasValue);
+            Assert.Equals(expected.Value, expires);
         }
 
         [Test, Ignore("Expiration not implemented")]
@@ -45,30 +45,30 @@ namespace Memstate.Test.Models.Redis
             //wait a bit and they should all be reported as expired
             Thread.Sleep(TimeSpan.FromMilliseconds(10));
             var expiredKeys = target.GetExpiredKeys();
-            Assert.IsTrue(new HashSet<string>(expiredKeys).SetEquals(range));
+            Assert.That(new HashSet<string>(expiredKeys).SetEquals(range));
 
             //check them individually
             foreach (var key in range)
             {
                 var expected = target.Expires(key);
-                Assert.IsTrue(expected.HasValue);
-                Assert.AreEqual(expected.Value, expires);
+                Assert.That(expected.HasValue);
+                Assert.Equals(expected.Value, expires);
             }
 
             //un-expire the first one and check again
             target.Persist(range[0]);
             range = range.Skip(1).ToArray();
             expiredKeys = target.GetExpiredKeys();
-            Assert.IsTrue(new HashSet<string>(expiredKeys).SetEquals(range));
+            Assert.That(new HashSet<string>(expiredKeys).SetEquals(range));
 
             //purge and there should be no expired keys
             target.PurgeExpired();
             expiredKeys = target.GetExpiredKeys();
-            Assert.AreEqual(expiredKeys.Length, 0);
+            Assert.Equals(expiredKeys.Length, 0);
 
             //there should now be a single key in the store
-            Assert.AreEqual(target.KeyCount(), 1);
-            Assert.AreEqual("1", target.Get("1"));
+            Assert.Equals(target.KeyCount(), 1);
+            Assert.Equals("1", target.Get("1"));
         }
 
         [Test]
@@ -100,14 +100,14 @@ namespace Memstate.Test.Models.Redis
             redis.Expire(key, expires);
 
             var signaled = mre.WaitOne(TimeSpan.FromSeconds(5));
-            Assert.IsTrue(signaled, "No PurgeExpiredKeysCommand within time limit 5s");
+            Assert.That(signaled, "No PurgeExpiredKeysCommand within time limit 5s");
 
-            Assert.AreEqual(redis.KeyCount(), 1);
+            Assert.Equals(redis.KeyCount(), 1);
             engine.DisposeAsync().GetAwaiter().GetResult();
 
             engine = new EngineBuilder().Build<IRedisModel>(new RedisModel()).Result;
             redis = new LocalClient<IRedisModel>(engine).GetDispatchProxy();
-            Assert.AreEqual(redis.KeyCount(), 1);
+            Assert.Equals(redis.KeyCount(), 1);
             engine.DisposeAsync().GetAwaiter().GetResult();
         }
     }
